@@ -17,11 +17,11 @@ dependencies:
   firebase_database: ^11.0.2
   firebase_messaging: ^15.0.2
   firebase_storage: ^12.1.0
+  fireflutter:
+    path: ..
   flutter:
     sdk: flutter
   go_router: ^14.2.0
-  model_house:
-    path: ..
   social_design_system: ^0.0.19
 
 dev_dependencies:

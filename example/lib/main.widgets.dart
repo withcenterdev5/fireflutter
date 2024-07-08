@@ -1,7 +1,7 @@
 import 'package:example/widget_app/widget_app.router.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:model_house/model_house.dart';
+import 'package:fireflutter/fireflutter.dart';
 import './firebase_options.dart';
 
 /// main of the widget app

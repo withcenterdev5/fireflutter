@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:model_house/model_house.dart';
+import 'package:fireflutter/fireflutter.dart';
 
 /// UserPhotoListView is a stateless widget that displays a horizontal list view of user photos.
 ///

@@ -1,7 +1,7 @@
 import 'package:example/widget_app/screens/home/widget.home.screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:model_house/model_house.dart';
+import 'package:fireflutter/fireflutter.dart';
 
 final GlobalKey<NavigatorState> globalNavigatorKey = GlobalKey();
 BuildContext get globalContext => globalNavigatorKey.currentContext!;

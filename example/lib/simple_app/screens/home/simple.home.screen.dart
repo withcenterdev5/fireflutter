@@ -1,8 +1,8 @@
 import 'package:example/simple_app/screens/user/simple.sign_in.screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:model_house/model_house.dart';
-import 'package:model_house/user/screens/user.public_profile.screen.dart';
+import 'package:fireflutter/fireflutter.dart';
+import 'package:fireflutter/user/screens/user.public_profile.screen.dart';
 
 class SimpleHomeScreen extends StatefulWidget {
   static const String routeName = '/';

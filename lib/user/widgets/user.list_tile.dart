@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:model_house/model_house.dart';
-import 'package:model_house/user/screens/user.public_profile.screen.dart';
+import 'package:fireflutter/fireflutter.dart';
+import 'package:fireflutter/user/screens/user.public_profile.screen.dart';
 
 class UserListTile extends StatelessWidget {
   const UserListTile({

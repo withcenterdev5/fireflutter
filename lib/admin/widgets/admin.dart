@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:model_house/model_house.dart';
+import 'package:fireflutter/fireflutter.dart';
 
 /// 관리자인지 판단하여 위젯 빌드 할 때 사용
 ///

@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:model_house/todo/todo.service.dart';
+import 'package:fireflutter/todo/todo.service.dart';
 
 /// A task entity class of Todo feature
 ///

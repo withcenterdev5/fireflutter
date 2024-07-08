@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:model_house/user/user.dart';
+import 'package:fireflutter/user/user.dart';
 
 /// UserAvatar
 ///

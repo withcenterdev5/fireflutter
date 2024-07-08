@@ -1,4 +1,4 @@
-import 'package:model_house/model_house.dart';
+import 'package:fireflutter/fireflutter.dart';
 
 /// Translation Service
 ///

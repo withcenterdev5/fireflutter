@@ -1,7 +1,7 @@
 import 'package:example/simple_app/screens/home/simple.home.screen.dart';
 import 'package:example/simple_app/screens/user/simple.sign_up.screen.dart';
 import 'package:flutter/material.dart';
-import 'package:model_house/widgets/auth/email_password_login.dart';
+import 'package:fireflutter/widgets/auth/email_password_login.dart';
 import 'package:go_router/go_router.dart';
 
 class SimpleSignInScreen extends StatefulWidget {

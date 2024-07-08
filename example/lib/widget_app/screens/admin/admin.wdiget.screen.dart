@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:model_house/model_house.dart';
+import 'package:fireflutter/fireflutter.dart';
 
 class AdminWidgetScreen extends StatefulWidget {
   static const String routeName = '/AdminWidget';

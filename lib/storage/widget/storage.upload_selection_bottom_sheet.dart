@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:model_house/translation/translation.extensions.dart';
+import 'package:fireflutter/translation/translation.extensions.dart';
 
 class StorageUploadSelectionBottomSheet extends StatelessWidget {
   const StorageUploadSelectionBottomSheet({

@@ -1,4 +1,4 @@
-import 'package:model_house/model_house.dart';
+import 'package:fireflutter/fireflutter.dart';
 
 /// [iam] and [i] are the simple aliases of UserService.instance
 UserService get iam => UserService.instance;

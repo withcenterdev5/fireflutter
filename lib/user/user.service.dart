@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fa;
-import 'package:model_house/model_house.dart';
+import 'package:fireflutter/fireflutter.dart';
 import 'package:rxdart/rxdart.dart';
 
 /// This is the user service class that will be used to manage the user's authentication and user data management.

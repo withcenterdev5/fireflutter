@@ -2,7 +2,7 @@ import 'package:example/widget_app/screens/admin/admin.wdiget.screen.dart';
 import 'package:example/widget_app/screens/user/user.widget.screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:model_house/model_house.dart';
+import 'package:fireflutter/fireflutter.dart';
 import 'package:social_design_system/social_design_system.dart';
 
 /// WidgetHomeScreen

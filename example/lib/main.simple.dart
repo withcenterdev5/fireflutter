@@ -2,7 +2,7 @@ import 'package:example/firebase_options.dart';
 import 'package:example/simple_app/simple_app.router.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:model_house/model_house.dart';
+import 'package:fireflutter/fireflutter.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
