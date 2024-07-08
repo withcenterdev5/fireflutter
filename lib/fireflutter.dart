@@ -40,7 +40,7 @@ export './todo/widgets/task.list_view.dart';
 export './user/user.dart';
 export './user/user.defines.dart';
 export './user/user.service.dart';
-export './user/widgets/auth_state.dart';
+export 'user/widgets/auth_state_change.dart';
 export './user/widgets/user.avatar.dart';
 export './user/widgets/my_doc.dart';
 export './user/widgets/display_name.dart';
