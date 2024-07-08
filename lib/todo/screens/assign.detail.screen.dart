@@ -1,5 +1,4 @@
 import 'package:fireflutter/fireflutter.dart';
-import 'package:fireflutter/todo/assign.dart';
 import 'package:flutter/material.dart';
 
 class AssignDetailScreen extends StatefulWidget {
@@ -15,7 +14,23 @@ class AssignDetailScreen extends StatefulWidget {
 }
 
 class _AssignDetailScreenState extends State<AssignDetailScreen> {
+  Task? task;
   final statusController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+
+    _initTask();
+  }
+
+  _initTask() async {
+    final task = await Task.get(widget.assign.taskId);
+    if (task == null) return;
+    setState(() {
+      this.task = task;
+    });
+  }
 
   @override
   void dispose() {
@@ -34,6 +49,9 @@ class _AssignDetailScreenState extends State<AssignDetailScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            Text("Task: ${task?.title}"),
+            Text("Task Content: ${task?.content}"),
+            const SizedBox(height: 24),
             Text("UID: ${widget.assign.uid}"),
             Text("Status: ${widget.assign.status}"),
             const Spacer(),
@@ -57,14 +75,15 @@ class _AssignDetailScreenState extends State<AssignDetailScreen> {
               child: const Text("CHANGE STATUS"),
             ),
             const SizedBox(height: 24),
-            ElevatedButton(
-              onPressed: () async {
-                await widget.assign.delete();
-                if (!context.mounted) return;
-                Navigator.of(context).pop();
-              },
-              child: const Text("UNASSIGN"),
-            ),
+            if (widget.assign.assignedBy == my?.uid)
+              ElevatedButton(
+                onPressed: () async {
+                  await widget.assign.delete();
+                  if (!context.mounted) return;
+                  Navigator.of(context).pop();
+                },
+                child: const Text("UNASSIGN"),
+              ),
             const SafeArea(
               child: SizedBox(height: 24),
             ),

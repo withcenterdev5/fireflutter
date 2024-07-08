@@ -56,8 +56,10 @@ class _TodoCreateScreenState extends State<TaskCreateScreen> {
   }
 
   createTask() async {
-    if (titleController.text.isEmpty) return;
-    await Task.create(title: titleController.text);
+    await Task.create(
+      title: titleController.text,
+      content: contentController.text,
+    );
     if (!mounted) return;
     Navigator.of(context).pop();
   }

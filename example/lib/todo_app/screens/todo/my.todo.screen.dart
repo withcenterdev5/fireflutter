@@ -1,4 +1,6 @@
 import 'package:fireflutter/fireflutter.dart';
+import 'package:fireflutter/todo/screens/assign.detail.screen.dart';
+import 'package:fireflutter/todo/widgets/assign.list_view.dart';
 import 'package:flutter/material.dart';
 
 class MyTodoScreen extends StatelessWidget {
@@ -13,10 +15,26 @@ class MyTodoScreen extends StatelessWidget {
       body: Column(
         children: [
           Expanded(
-            child: TaskListView(
-              queryOptions: TaskQueryOptions(
-                assignToContains: my?.uid,
+            child: AssignListView(
+              // queryOptions: TaskQueryOptions(
+              //   assignToContains: my?.uid,
+              // ),
+              queryOptions: AssignQueryOptions(
+                uid: my?.uid,
               ),
+              itemBuilder: (assign, index) {
+                return ListTile(
+                  title: Text("TASK ID:${assign.taskId}"),
+                  onTap: () {
+                    showGeneralDialog(
+                      context: context,
+                      pageBuilder: (context, a1, a2) => AssignDetailScreen(
+                        assign: assign,
+                      ),
+                    );
+                  },
+                );
+              },
             ),
           )
         ],

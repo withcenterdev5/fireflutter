@@ -11,12 +11,14 @@ class AssignQueryOptions {
     this.limit = 20,
     this.orderBy = 'createdAt',
     this.orderByDescending = true,
+    this.uid,
   });
 
   final Task? task;
   final int limit;
   final String orderBy;
   final bool orderByDescending;
+  final String? uid;
 }
 
 class AssignListView extends StatelessWidget {
@@ -77,6 +79,12 @@ class AssignListView extends StatelessWidget {
         assignQuery = assignQuery.where(
           'taskId',
           isEqualTo: queryOptions!.task!.id,
+        );
+      }
+      if (queryOptions!.uid != null) {
+        assignQuery = assignQuery.where(
+          'uid',
+          isEqualTo: queryOptions!.uid,
         );
       }
       assignQuery = assignQuery

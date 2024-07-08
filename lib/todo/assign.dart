@@ -67,6 +67,9 @@ class Assign {
     return Assign.fromSnapshot(snapshot);
   }
 
+  // REVIEW
+  // Getter using TaskId and UID?
+
   /// Assign a task to a user
   ///
   /// This method creates a new assign document and updates the 'assignTo'
