@@ -117,6 +117,8 @@ class TranslationService {
     if (translationTexts[key] == null) {
       translationTexts[key] = {};
     }
+
+    /// Case insensitive
     translationTexts[key]![locale] = value;
   }
 }

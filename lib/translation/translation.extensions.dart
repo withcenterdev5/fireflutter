@@ -9,5 +9,9 @@ extension TranslationServiceExtensionMap on String {
   /// ```
   String get t => TranslationService.instance.tr(this);
   String tr({Map<String, dynamic>? args, int? form}) =>
-      TranslationService.instance.tr(this, args: args, form: form);
+      TranslationService.instance.tr(
+        this,
+        args: args,
+        form: form,
+      );
 }
