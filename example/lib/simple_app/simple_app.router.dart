@@ -1,4 +1,5 @@
 import 'package:example/simple_app/screens/home/simple.home.screen.dart';
+import 'package:example/simple_app/screens/main/main.simple.screen.dart';
 import 'package:example/simple_app/screens/menu/simple.menu.screen.dart';
 import 'package:example/simple_app/screens/user/simple.sign_in.screen.dart';
 import 'package:example/simple_app/screens/user/simple.sign_up.screen.dart';
@@ -22,6 +23,10 @@ final simpleRouter = GoRouter(
     }
   },
   routes: [
+    GoRoute(
+      path: MainSimpleScreen.routeName,
+      builder: (context, state) => const MainSimpleScreen(),
+    ),
     GoRoute(
       path: SimpleHomeScreen.routeName,
       builder: (context, state) => const SimpleHomeScreen(),

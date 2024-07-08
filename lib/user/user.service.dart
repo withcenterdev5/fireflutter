@@ -18,13 +18,27 @@ class UserService {
 
   User? user;
   BehaviorSubject<User?> changes = BehaviorSubject();
+
+  /// to replace the fireflutter public profile screen, you can provide
+  /// your own public profile screen in user initialization
+  /// ex.
+  /// ```dart
+  /// UserService.intance.init(
+  ///  publicProfileScreen: (user) {
+  ///     return MyPublicProfileScreen(user: user);
+  ///   }
+  /// );
+  /// ```
   Widget Function(User? user)? publicProfileScreen;
+  Widget Function()? profileUpdateScreen;
 
   init({
     Widget Function(User? user)? publicProfileScreen,
+    Widget Function()? profileUpdateScreen,
   }) {
     listenUserDocumentChanges();
     this.publicProfileScreen = publicProfileScreen ?? this.publicProfileScreen;
+    this.profileUpdateScreen = profileUpdateScreen ?? this.profileUpdateScreen;
   }
 
   bool get signedIn => fa.FirebaseAuth.instance.currentUser != null;
@@ -102,7 +116,8 @@ class UserService {
         );
   }
 
-  // to display profile
+  // to display public profile user `UserService.intance.showPublicProfile`
+  // this will display publicProfile from fireflutter
   showPublicProfile(BuildContext context) {
     return showGeneralDialog(
       context: context,
@@ -112,5 +127,15 @@ class UserService {
             : UserService.instance.publicProfileScreen!.call(user);
       },
     );
+  }
+
+  showProfileUpdaeScreen(BuildContext context) {
+    return showGeneralDialog(
+        context: context,
+        pageBuilder: (context, _, __) {
+          return UserService.instance.profileUpdateScreen == null
+              ? const UserProfileUpdateScreen()
+              : UserService.instance.profileUpdateScreen!.call();
+        });
   }
 }
