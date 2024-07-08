@@ -24,4 +24,13 @@ class TodoService {
     final snapshot = await assignCol.where('taskId', isEqualTo: taskId).get();
     return snapshot.docs.map((e) => Assign.fromSnapshot(e)).toList();
   }
+
+  Future<Assign?> getMyAssign(String taskId) async {
+    final snapshot = await assignCol
+        .where('taskId', isEqualTo: taskId)
+        .where('uid', isEqualTo: my!.uid)
+        .get();
+    if (snapshot.docs.isEmpty) return null;
+    return Assign.fromSnapshot(snapshot.docs[0]);
+  }
 }
