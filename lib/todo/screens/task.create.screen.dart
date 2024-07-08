@@ -25,9 +25,26 @@ class _TodoCreateScreenState extends State<TaskCreateScreen> {
               label: 'TITLE'.t,
               controller: titleController,
             ),
+            const Spacer(),
+            ElevatedButton(
+              onPressed: createTask,
+              child: const Text("Create Task"),
+            ),
+            const SafeArea(
+              child: SizedBox(
+                height: 24,
+              ),
+            ),
           ],
         ),
       ),
     );
+  }
+
+  createTask() async {
+    if (titleController.text.isEmpty) return;
+    await Task.create(title: titleController.text);
+    if (!mounted) return;
+    Navigator.of(context).pop();
   }
 }

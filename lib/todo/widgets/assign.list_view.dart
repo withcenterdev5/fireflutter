@@ -1,26 +1,26 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_ui_firestore/firebase_ui_firestore.dart';
 import 'package:fireflutter/fireflutter.dart';
+import 'package:fireflutter/todo/screens/assign.detail.screen.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-class TaskQueryOptions {
-  TaskQueryOptions({
+class AssignQueryOptions {
+  const AssignQueryOptions({
+    this.task,
     this.limit = 20,
     this.orderBy = 'createdAt',
     this.orderByDescending = true,
   });
 
+  final Task? task;
   final int limit;
   final String orderBy;
   final bool orderByDescending;
 }
 
-/// Task list view
-///
-/// This widget displays a list of tasks using [ListView.separated] widget.
-class TaskListView extends StatelessWidget {
-  const TaskListView({
+class AssignListView extends StatelessWidget {
+  const AssignListView({
     super.key,
     this.pageSize = 20,
     this.loadingBuilder,
@@ -65,25 +65,29 @@ class TaskListView extends StatelessWidget {
   final ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
   final String? restorationId;
   final Clip clipBehavior;
-  final Widget Function(Task task, int index)? itemBuilder;
+  final Widget Function(Assign assign, int index)? itemBuilder;
   final Widget Function()? emptyBuilder;
-  final TaskQueryOptions? queryOptions;
+  final AssignQueryOptions? queryOptions;
 
   @override
   Widget build(BuildContext context) {
-    Query taskQuery = Task.col;
-
+    Query assignQuery = Assign.col;
     if (queryOptions != null) {
-      taskQuery = taskQuery
+      if (queryOptions!.task != null) {
+        assignQuery = assignQuery.where(
+          'taskId',
+          isEqualTo: queryOptions!.task!.id,
+        );
+      }
+      assignQuery = assignQuery
           .orderBy(
             queryOptions!.orderBy,
             descending: queryOptions!.orderByDescending,
           )
           .limit(queryOptions!.limit);
     }
-
     return FirestoreQueryBuilder(
-      query: taskQuery,
+      query: assignQuery,
       builder: (context, snapshot, _) {
         if (snapshot.isFetching) {
           return loadingBuilder?.call() ??
@@ -129,7 +133,7 @@ class TaskListView extends StatelessWidget {
               snapshot.fetchMore();
             }
 
-            final task = Task.fromSnapshot(snapshot.docs[index]);
+            final assign = Assign.fromSnapshot(snapshot.docs[index]);
 
             return GestureDetector(
               onTap: () {
@@ -140,16 +144,19 @@ class TaskListView extends StatelessWidget {
 
                 showGeneralDialog(
                   context: context,
-                  pageBuilder: (_, __, ___) => TaskDetailScreen(
-                    task: task,
+                  pageBuilder: (_, __, ___) => AssignDetailScreen(
+                    assign: assign,
                   ),
                 );
               },
-              child: itemBuilder?.call(task, index) ??
+              child: itemBuilder?.call(assign, index) ??
                   Container(
                     padding: const EdgeInsets.all(8),
-                    color: Colors.teal[100],
-                    child: Text("Task is ${task.title}"),
+                    decoration: BoxDecoration(
+                      color: Colors.teal[100],
+                      border: Border.all(),
+                    ),
+                    child: Text("Assign is ${assign.uid}"),
                   ),
             );
           },
