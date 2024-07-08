@@ -25,7 +25,7 @@ void testTodo() async {
   await testTaskStatus();
 
   await testDeleteField();
-  await testCreateWithPriority();
+  // await testCreateWithPriority();
 
   await testReport();
 }
@@ -227,16 +227,16 @@ Future testDeleteField() async {
       'Expect: success on startAt update.');
 }
 
-Future testCreateWithPriority() async {
-  final taskId = (await Task.create(
-    title: 'task - ${DateTime.now()}',
-    priority: 1,
-  ))
-      .id;
+// Future testCreateWithPriority() async {
+//   final taskId = (await Task.create(
+//     title: 'task - ${DateTime.now()}',
+//     priority: 1,
+//   ))
+//       .id;
 
-  final created = await Task.get(taskId) as Task;
-  isTrue(
-    created.priority == 1,
-    'Expect: success on task with priority create.',
-  );
-}
+//   final created = await Task.get(taskId) as Task;
+//   isTrue(
+//     created.priority == 1,
+//     'Expect: success on task with priority create.',
+//   );
+// }

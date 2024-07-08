@@ -22,16 +22,6 @@ class Task {
   DateTime? startAt;
   DateTime? endAt;
 
-  /// [priority] is used to weigh the importance of the task.
-  ///
-  /// The scaling of priority is perferrably from 1 to 5.
-  /// 1 = Not a Prioity
-  /// 2 = Low Priority
-  /// 3 = Normal Priority
-  /// 4 = High Priority
-  /// 5 = Urgent/Immediate
-  int priority;
-
   Task({
     required this.id,
     required this.title,
@@ -41,7 +31,6 @@ class Task {
     this.startAt,
     this.endAt,
     this.assignTo = const [],
-    this.priority = 3,
   });
 
   factory Task.fromSnapshot(DocumentSnapshot<Object?> snapshot) {
@@ -63,7 +52,6 @@ class Task {
       startAt: startAt?.toDate(),
       endAt: endAt?.toDate(),
       assignTo: List<String>.from(json['assignTo'] ?? []),
-      priority: json['priority'] ?? 3,
     );
   }
 
