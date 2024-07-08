@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fireflutter/fireflutter.dart';
 
 /// To-do service
@@ -26,9 +27,10 @@ class TodoService {
   }
 
   Future<Assign?> getMyAssign(String taskId) async {
+    final myUid = FirebaseAuth.instance.currentUser!.uid;
     final snapshot = await assignCol
         .where('taskId', isEqualTo: taskId)
-        .where('uid', isEqualTo: my!.uid)
+        .where('uid', isEqualTo: myUid)
         .get();
     if (snapshot.docs.isEmpty) return null;
     return Assign.fromSnapshot(snapshot.docs[0]);

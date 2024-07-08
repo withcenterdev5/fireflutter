@@ -51,6 +51,10 @@ class _HouseTestScreenState extends State<HouseTestScreen> {
                     onPressed: testTaskUnassign,
                     child: Text('Task Delete Assign (or Unassign) Test'),
                   ),
+                  const ElevatedButton(
+                    onPressed: testAssignRetrieveMyDocFromTaskID,
+                    child: Text('My Assign Doc Retrieve from Task ID'),
+                  ),
                 ],
               ),
       ),

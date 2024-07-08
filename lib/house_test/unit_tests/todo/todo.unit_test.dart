@@ -269,3 +269,27 @@ Future testTaskFlow() async {
 //     'Expect: success on task with priority create.',
 //   );
 // }
+
+Future testAssignRetrieveMyDocFromTaskID() async {
+  // uidB is the Assignee of the task
+  final uidB = await loginAsB();
+
+  // uidA is Creator of the task
+  await loginAsA();
+
+  // uidA created a task and assigned it to uidB
+  final task = await createTask();
+  final createdAssignRef = await Assign.create(uid: uidB, taskId: task.id);
+  await Assign.get(createdAssignRef.id);
+
+  final retrieveAssignOfA = await TodoService.instance.getMyAssign(task.id);
+
+  isTrue(retrieveAssignOfA == null,
+      "Expect: assign must be null for A because it is not assigned to A");
+
+  await loginAsB();
+
+  final retrieveAssignOfB = await TodoService.instance.getMyAssign(task.id);
+
+  isTrue(retrieveAssignOfB?.uid == uidB, "Expect: assign.uid must be uidB");
+}
