@@ -9,11 +9,13 @@ class TaskQueryOptions {
     this.limit = 20,
     this.orderBy = 'createdAt',
     this.orderByDescending = true,
+    this.assignToContains,
   });
 
   final int limit;
   final String orderBy;
   final bool orderByDescending;
+  final String? assignToContains;
 }
 
 /// Task list view
@@ -74,6 +76,13 @@ class TaskListView extends StatelessWidget {
     Query taskQuery = Task.col;
 
     if (queryOptions != null) {
+      if (queryOptions!.assignToContains != null) {
+        taskQuery = taskQuery.where(
+          "assignTo",
+          arrayContains: queryOptions!.assignToContains!,
+        );
+      }
+
       taskQuery = taskQuery
           .orderBy(
             queryOptions!.orderBy,
@@ -131,27 +140,25 @@ class TaskListView extends StatelessWidget {
 
             final task = Task.fromSnapshot(snapshot.docs[index]);
 
-            return GestureDetector(
-              onTap: () {
-                // Navigator.of(context).pushNamed(
-                //   TaskDetailScreen.routeName,
-                //   arguments: task,
-                // );
-
-                showGeneralDialog(
-                  context: context,
-                  pageBuilder: (_, __, ___) => TaskDetailScreen(
-                    task: task,
-                  ),
-                );
-              },
-              child: itemBuilder?.call(task, index) ??
-                  Container(
+            return itemBuilder?.call(task, index) ??
+                GestureDetector(
+                  onTap: () {
+                    showGeneralDialog(
+                      context: context,
+                      pageBuilder: (_, __, ___) => TaskDetailScreen(
+                        task: task,
+                      ),
+                    );
+                  },
+                  child: Container(
                     padding: const EdgeInsets.all(8),
-                    color: Colors.teal[100],
+                    decoration: BoxDecoration(
+                      color: Colors.teal[100],
+                      border: Border.all(width: 1),
+                    ),
                     child: Text("Task is ${task.title}"),
                   ),
-            );
+                );
           },
         );
       },

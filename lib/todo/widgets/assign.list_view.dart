@@ -156,7 +156,7 @@ class AssignListView extends StatelessWidget {
                       color: Colors.teal[100],
                       border: Border.all(),
                     ),
-                    child: Text("Assign is ${assign.uid}"),
+                    child: Text("${assign.uid}: ${assign.status}"),
                   ),
             );
           },

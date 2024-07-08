@@ -8,7 +8,7 @@ class AssignStatus {
   static const review = 'review';
   static const closed = 'closed';
 
-  static values() => [
+  static List<String> values() => [
         waiting,
         progress,
         finished,

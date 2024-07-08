@@ -1,4 +1,5 @@
 import 'package:fireflutter/fireflutter.dart';
+import 'package:fireflutter/todo/screens/task.update.screen.dart';
 import 'package:fireflutter/todo/widgets/assign.list_view.dart';
 import 'package:flutter/material.dart';
 
@@ -16,6 +17,14 @@ class TaskDetailScreen extends StatefulWidget {
 }
 
 class _TaskDetailScreenState extends State<TaskDetailScreen> {
+  late Task task;
+
+  @override
+  void initState() {
+    super.initState();
+    task = widget.task;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,15 +36,15 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text("Title: ${widget.task.title}"),
-            Text("Content: ${widget.task.content}"),
+            Text("Title: ${task.title}"),
+            Text("Content: ${task.content}"),
             const SizedBox(height: 24),
             const Text("Assignees:"),
-            const SizedBox(height: 24),
+            const SizedBox(height: 12),
             Expanded(
               child: AssignListView(
                 queryOptions: AssignQueryOptions(
-                  task: widget.task,
+                  task: task,
                 ),
               ),
             ),
@@ -54,7 +63,7 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
                           return UserListTile(
                             user: user,
                             onTap: () {
-                              if (widget.task.assignTo.contains(user.uid)) {
+                              if (task.assignTo.contains(user.uid)) {
                                 errorToast(
                                     context: context,
                                     message: "Already Assigned");
@@ -71,22 +80,37 @@ class _TaskDetailScreenState extends State<TaskDetailScreen> {
                 if (assignUser == null) return;
                 await Assign.create(
                   uid: assignUser.uid,
-                  taskId: widget.task.id,
+                  taskId: task.id,
                 );
                 if (!mounted) return;
                 setState(() {
-                  widget.task.assignTo.add(assignUser.uid);
+                  task.assignTo.add(assignUser.uid);
                 });
               },
               child: const Text('ASSIGN'),
             ),
             const Spacer(),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () async {
+                final updatedTask = await showGeneralDialog<Task?>(
+                  context: context,
+                  pageBuilder: (context, a1, a2) =>
+                      TaskUpdateScreen(task: task),
+                );
+                if (updatedTask == null) return;
+                if (!mounted) return;
+                setState(() {
+                  task = updatedTask;
+                });
+              },
               child: const Text('UPDATE'),
             ),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () async {
+                await task.delete();
+                if (!context.mounted) return;
+                Navigator.of(context).pop();
+              },
               child: const Text('DELETE'),
             ),
             const SafeArea(

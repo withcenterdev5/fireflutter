@@ -1,13 +1,27 @@
 import 'package:fireflutter/fireflutter.dart';
+import 'package:fireflutter/todo/assign.dart';
 import 'package:flutter/material.dart';
 
-class AssignDetailScreen extends StatelessWidget {
+class AssignDetailScreen extends StatefulWidget {
   const AssignDetailScreen({
     super.key,
     required this.assign,
   });
 
   final Assign assign;
+
+  @override
+  State<AssignDetailScreen> createState() => _AssignDetailScreenState();
+}
+
+class _AssignDetailScreenState extends State<AssignDetailScreen> {
+  final statusController = TextEditingController();
+
+  @override
+  void dispose() {
+    statusController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,12 +34,32 @@ class AssignDetailScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text("UID: ${assign.uid}"),
-            Text("Status: ${assign.status}"),
+            Text("UID: ${widget.assign.uid}"),
+            Text("Status: ${widget.assign.status}"),
             const Spacer(),
+            DropdownMenu<String>(
+              dropdownMenuEntries: AssignStatus.values()
+                  .map(
+                    (status) => DropdownMenuEntry(value: status, label: status),
+                  )
+                  .toList(),
+              initialSelection: widget.assign.status,
+              controller: statusController,
+            ),
             ElevatedButton(
               onPressed: () async {
-                await assign.delete();
+                await widget.assign.changeStatus(statusController.text);
+                if (!context.mounted) return;
+                setState(() {
+                  widget.assign.status = statusController.text;
+                });
+              },
+              child: const Text("CHANGE STATUS"),
+            ),
+            const SizedBox(height: 24),
+            ElevatedButton(
+              onPressed: () async {
+                await widget.assign.delete();
                 if (!context.mounted) return;
                 Navigator.of(context).pop();
               },
