@@ -44,6 +44,13 @@ class _SimpleHomeScreenState extends State<SimpleHomeScreen> {
             },
             child: const Text('Public Profile'),
           ),
+
+          ElevatedButton(
+            onPressed: () {
+              UserService.instance.showPublicProfile(context);
+            },
+            child: const Text('Public Profile'),
+          ),
           ElevatedButton(
             onPressed: () async {
               final re = await showDialog<bool?>(
@@ -88,15 +95,9 @@ class _SimpleHomeScreenState extends State<SimpleHomeScreen> {
             },
             child: const Text('Logout'),
           ),
-
-          // UserDoc(
-          //     uid: my!.uid,
-          //     builder: (user) {
-          //       if (user!.photoUrl == null) return const SizedBox();
-          //       return CircleAvatar(
-          //         backgroundImage: NetworkImage(user.photoUrl!),
-          //       );
-          //     })
+          const Expanded(
+            child: UserListView(),
+          ),
         ],
       ),
     );

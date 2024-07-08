@@ -27,7 +27,12 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    UserService.instance.init();
+    UserService.instance.init(publicProfileScreen: (user) {
+      return Scaffold(
+        appBar: AppBar(),
+        body: const Text('hello'),
+      );
+    });
   }
 
   @override

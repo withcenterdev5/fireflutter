@@ -12,31 +12,41 @@ class UserPublicProfileScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(),
       body: SafeArea(
-        child: Column(
-          children: [
-            const Spacer(),
-            UserAvatar(
-              user: user,
-              size: 100,
-              radius: 50,
-            ),
-            Text(
-              user.displayName,
-            ),
-            Text(
-              user.name,
-            ),
-            Row(
-              children: [
-                ElevatedButton(
-                  onPressed: () {},
-                  child: const Text(
-                    'Like',
-                  ),
-                )
-              ],
-            )
-          ],
+        child: Center(
+          child: Column(
+            children: [
+              const Spacer(),
+              UserAvatar(
+                user: user,
+                size: 100,
+                radius: 50,
+              ),
+              const SizedBox(
+                height: 8,
+              ),
+              Text(
+                user.displayName,
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              Text(
+                '(${user.name})',
+                style: Theme.of(context).textTheme.labelMedium,
+              ),
+              // Row(
+              //   children: [
+              //     ElevatedButton(
+              //       onPressed: () {},
+              //       child: const Text(
+              //         'Like',
+              //       ),
+              //     )
+              //   ],
+              // )
+              const SizedBox(
+                height: 16,
+              ),
+            ],
+          ),
         ),
       ),
     );

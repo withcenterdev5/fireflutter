@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fa;
 import 'package:fireflutter/fireflutter.dart';
+import 'package:fireflutter/user/screens/user.public_profile.screen.dart';
+import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 
 /// This is the user service class that will be used to manage the user's authentication and user data management.
@@ -16,9 +18,13 @@ class UserService {
 
   User? user;
   BehaviorSubject<User?> changes = BehaviorSubject();
+  Widget Function(User? user)? publicProfileScreen;
 
-  init() {
+  init({
+    Widget Function(User? user)? publicProfileScreen,
+  }) {
     listenUserDocumentChanges();
+    this.publicProfileScreen = publicProfileScreen ?? this.publicProfileScreen;
   }
 
   bool get signedIn => fa.FirebaseAuth.instance.currentUser != null;
@@ -94,5 +100,17 @@ class UserService {
           data,
           SetOptions(merge: true),
         );
+  }
+
+  // to display profile
+  showPublicProfile(BuildContext context) {
+    return showGeneralDialog(
+      context: context,
+      pageBuilder: (context, _, __) {
+        return UserService.instance.publicProfileScreen == null
+            ? UserPublicProfileScreen(user: user!)
+            : UserService.instance.publicProfileScreen!.call(user);
+      },
+    );
   }
 }
