@@ -31,6 +31,8 @@ export './translation/translation.texts.dart';
 export './user/screens/user.profile_update.screen.dart';
 
 export './todo/assign.dart';
+export 'todo/screens/task.create.screen.dart';
+export 'todo/screens/task.detail.screen.dart';
 export './todo/task.dart';
 export './todo/todo.service.dart';
 export './todo/widgets/task.list_view.dart';

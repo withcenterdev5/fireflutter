@@ -10,8 +10,8 @@ import 'package:fireflutter/todo/todo.service.dart';
 /// A task can be assigned to muliple users. To assign a task to a user, use
 /// [assignTo] method.
 class Task {
-  final CollectionReference col = TodoService.instance.taskCol;
-  DocumentReference get ref => col.doc(id);
+  static final CollectionReference col = TodoService.instance.taskCol;
+  DocumentReference get ref => Task.col.doc(id);
 
   String id;
   String title;
@@ -109,12 +109,12 @@ class Task {
   }
 
   /// Delete a field to a doc of task
-  Future<void> deleteField(List<String> fields) async {
-    final deleteData = Map<String, dynamic>.fromEntries(
-      fields.map((field) => MapEntry(field, FieldValue.delete())),
-    );
-    await ref.update(deleteData);
-  }
+  // Future<void> deleteField(List<String> fields) async {
+  //   final deleteData = Map<String, dynamic>.fromEntries(
+  //     fields.map((field) => MapEntry(field, FieldValue.delete())),
+  //   );
+  //   await ref.update(deleteData);
+  // }
 
   /// Delete task including all the related assigns and data.
   Future<void> delete() async {
