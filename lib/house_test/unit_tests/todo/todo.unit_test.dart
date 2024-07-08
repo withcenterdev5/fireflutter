@@ -54,6 +54,33 @@ Future testTaskAssign() async {
   );
 }
 
+Future testTaskUnassign() async {
+  final task = await createTask();
+  final createdRef = await Assign.create(taskId: task.id, uid: my!.uid);
+  final createdAssign = await Assign.get(createdRef.id) as Assign;
+  isTrue(createdAssign.taskId == task.id, 'Task id is not correct');
+  isTrue(createdAssign.uid == my!.uid, 'User id is not correct');
+
+  final updatedTask = await Task.get(task.id) as Task;
+
+  isTrue(
+    updatedTask.assignTo.contains(my!.uid),
+    'Expect: success on task assign',
+  );
+
+  await createdAssign.delete();
+
+  final updatedAssign = await Assign.get(createdAssign.id);
+  isTrue(updatedAssign == null, 'Expect: success on assign delete.');
+
+  final updatedTask2 = await Task.get(task.id) as Task;
+
+  isTrue(
+    !updatedTask2.assignTo.contains(my!.uid),
+    'Expect: success on task unassign (remove from assign list)',
+  );
+}
+
 Future testTaskCreate() async {
   final ref = await Task.create(title: 'fisrt task');
   final created = await Task.get(ref.id) as Task;

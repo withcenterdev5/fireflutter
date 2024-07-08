@@ -47,6 +47,10 @@ class _HouseTestScreenState extends State<HouseTestScreen> {
                   //   onPressed: testCreateWithPriority,
                   //   child: Text('Task Create With Priority Test'),
                   // ),
+                  const ElevatedButton(
+                    onPressed: testTaskUnassign,
+                    child: Text('Task Delete Assign (or Unassign) Test'),
+                  ),
                 ],
               ),
       ),
