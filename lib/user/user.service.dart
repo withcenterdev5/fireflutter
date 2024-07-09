@@ -19,6 +19,9 @@ class UserService {
   User? user;
   BehaviorSubject<User?> changes = BehaviorSubject();
 
+  /// Enable anonymous sign in
+  bool enableAnonymousSignIn = true;
+
   /// to replace the fireflutter public profile screen, you can provide
   /// your own public profile screen in user initialization
   /// ex.
@@ -33,12 +36,22 @@ class UserService {
   Widget Function()? profileUpdateScreen;
 
   init({
-    Widget Function(User? user)? publicProfileScreen,
-    Widget Function()? profileUpdateScreen,
+    bool enableAnonymousSignIn = true,
   }) {
+    this.enableAnonymousSignIn = enableAnonymousSignIn;
     listenUserDocumentChanges();
-    this.publicProfileScreen = publicProfileScreen ?? this.publicProfileScreen;
-    this.profileUpdateScreen = profileUpdateScreen ?? this.profileUpdateScreen;
+    publicProfileScreen = publicProfileScreen ?? publicProfileScreen;
+    profileUpdateScreen = profileUpdateScreen ?? profileUpdateScreen;
+  }
+
+  initAnonymousSignIn() async {
+    if (enableAnonymousSignIn) {
+      final user = fa.FirebaseAuth.instance.currentUser;
+      if (user == null) {
+        dog('initAnonymousSignIn: sign in anonymously');
+        await fa.FirebaseAuth.instance.signInAnonymously();
+      }
+    }
   }
 
   bool get signedIn => fa.FirebaseAuth.instance.currentUser != null;
@@ -55,11 +68,16 @@ class UserService {
         fa.FirebaseAuth.instance.authStateChanges().listen((faUser) async {
       /// User state changed
       if (faUser == null) {
+        dog('Firebase User is null. User signed out.');
         user = null;
         changes.add(user);
-        dog('faUser is null');
+        initAnonymousSignIn();
       } else {
-        dog('faUser is not null');
+        if (faUser.isAnonymous) {
+          dog('User signed in. The Firebase User is anonymous');
+        } else {
+          dog('User signed in. The Firebase User is NOT anonymous');
+        }
 
         /// User signed in. Listen to the user's document changes.
         firestoreMyDocSubscription?.cancel();

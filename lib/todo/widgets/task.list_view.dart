@@ -133,10 +133,9 @@ class TaskListView extends StatelessWidget {
 
             return GestureDetector(
               onTap: () {
-                Navigator.of(context).pushNamed(
-                  TaskDetailScreen.routeName,
-                  arguments: task,
-                );
+                showGeneralDialog(
+                    context: context,
+                    pageBuilder: (_, __, ___) => TaskDetailScreen(task: task));
               },
               child: itemBuilder?.call(task, index) ??
                   Container(

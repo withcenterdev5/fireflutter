@@ -1,7 +1,7 @@
-# House Model
+# FireFlutter
 
 
-- [House Model](#house-model)
+- [FireFlutter](#fireflutter)
   - [Building as a core developer](#building-as-a-core-developer)
   - [Coding convention](#coding-convention)
     - [Singular form](#singular-form)
