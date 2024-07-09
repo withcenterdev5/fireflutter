@@ -37,11 +37,13 @@ class UserService {
 
   init({
     bool enableAnonymousSignIn = true,
+    Widget Function(User? user)? publicProfileScreen,
+    Widget Function()? profileUpdateScreen,
   }) {
     this.enableAnonymousSignIn = enableAnonymousSignIn;
     listenUserDocumentChanges();
-    publicProfileScreen = publicProfileScreen ?? publicProfileScreen;
-    profileUpdateScreen = profileUpdateScreen ?? profileUpdateScreen;
+    this.publicProfileScreen = publicProfileScreen ?? this.publicProfileScreen;
+    this.profileUpdateScreen = profileUpdateScreen ?? this.profileUpdateScreen;
   }
 
   initAnonymousSignIn() async {

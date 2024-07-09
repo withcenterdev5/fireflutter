@@ -3,7 +3,6 @@ import 'package:example/simple_app/screens/main/main.simple.screen.dart';
 import 'package:example/simple_app/screens/menu/simple.menu.screen.dart';
 import 'package:example/simple_app/screens/user/simple.sign_in.screen.dart';
 import 'package:example/simple_app/screens/user/simple.sign_up.screen.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:fireflutter/fireflutter.dart';
@@ -15,13 +14,6 @@ BuildContext get globalContext => globalNavigatorKey.currentContext!;
 /// GoRouter
 final simpleRouter = GoRouter(
   navigatorKey: globalNavigatorKey,
-  redirect: (context, state) {
-    if (FirebaseAuth.instance.currentUser == null) {
-      return SimpleSignInScreen.routeName;
-    } else {
-      return null;
-    }
-  },
   routes: [
     GoRoute(
       path: MainSimpleScreen.routeName,
