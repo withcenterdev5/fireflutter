@@ -170,6 +170,7 @@ expect('apple'.tr(args: {'name': 'J', 'n': n}, form: n), 'J has 3 apples.');
 
 
 
+
 - flow of task.
 ```
 creator -> assigned -> in-progress(working) -> [ finished | quit ] -> review -> [ accept | reject ]
@@ -244,6 +245,8 @@ task7 {
 There are more to improve. But these work will be done later.
 
 - a moderator should be able to give permission to whom he can create tasks.
+- A moderator can create his own user groups so he can quickly add all his member without inviting them indivisually in each groupo.
+
 
 ### Terms
 
@@ -284,7 +287,15 @@ flowchart TD
     --> STATUS[Change status]
 ```
 
-- A moderator can create a user group so he can quickly add all his member without inviting them indivisually in each groupo.
+- Invite user and accept
+
+```mermaid
+flowchart TD
+  START(A invites B)
+    --> 
+```
+
+
 
 
 
