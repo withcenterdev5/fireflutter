@@ -73,7 +73,7 @@ Use `FirestoreQueryBuilder` or `FirebaseDatabaseQueryBuilder`. Use query builder
 
 ## Documentation
 
-There is no enlish version of documents. So, write all the document in the source code. The comment int source code will turn into dartdoc when it is deployed into pub.dev.
+There is no english version of documents. So, write all the document in the source code. The comment int source code will turn into dartdoc when it is deployed into pub.dev.
 
 
 ## Test
@@ -252,9 +252,9 @@ There are more to improve. But these work will be done later.
 
 - A `moderator` is the one who manages the tasks. Usually, the he is the one who creates the group, invites other users, creates tasks and assigns to others. Anyone can be a moderator without any registration.
 
+- A `group` is a separate enity. It is managed by a `moderator`. It can have `members`. A moderator can assign task to a group.
 
 ### Logic of TODO feature
-
 
 - A moderator should begin with creating a group to start managing tasks and users.
 
@@ -287,13 +287,26 @@ flowchart TD
     --> STATUS[Change status]
 ```
 
-- Invite user and accept
+- Invite user and accept/reject
 
 ```mermaid
 flowchart LR
   START(A invites B)
     --> CREATE[(Save Invitation\nto Group)]
     --> WaitAcceptance>Wait for B to Accept]
+    --> |Accepted| BAccepted[(Update Invite\ninto Accepted)]
+    WaitAcceptance --> |Rejected| BRejected[(Delete User\nInvitation)]
+    BAccepted --> End(((End)))
+    BRejected --> End(((End)))
+```
+
+- Invite user (minor age)
+
+```mermaid
+flowchart LR
+  START(A invites child)
+    --> CREATE[(Save Invitation\nto Group)]
+    --> WaitAcceptance>Wait for Parent to Accept]
     --> |Accepted| BAccepted[(Update Invite\ninto Accepted)]
     WaitAcceptance --> |Rejected| BRejected[(Delete User\nInvitation)]
     BAccepted --> End(((End)))
@@ -308,6 +321,15 @@ flowchart TD
   --> CreateTask[[Create Task]]
   --> AssignToGroup[[Assign Task to Group\nLoop thru all members then assign]]
   --> End(((End)))  
+
+  AssignToGroupSubRoute(Assign Task to Group)
+  --> HasMember{Has More\nMembers?}
+  --> |false| EndAssignToGroupSubRoute(((End Assign\nGroup)))
+  HasMember --> |true| nextMember[Next Member]
+  --> assign[[Assign]]
+  --> HasMember
+
+
 ```
 
 - User B Does the task assigned by User A
@@ -316,17 +338,17 @@ flowchart TD
 flowchart TD
   START(A Assigned Task to B)
   --> BReceive[B received the task with `Waiting` Status]
-  --> ChangeStatusProgress[B changed status from\n`Waiting` into `Progress`]
+  --> ChangeStatusProgress[(B updated status from\n`Waiting` into `Progress`)]
   --> BDoesTask[B Does the task]
-  --> BChangeStatusReview[B changed status from\n`Progress` into `Review`]
+  --> BChangeStatusReview[(B updated status from\n`Progress` into `Review`)]
   --> AReviews>A Reviews B's output]
-  AReviews --> |A Accepts| Accepted[A changed status from\n`Review` into `Finished`]
-  AReviews --> |A Rejects| Rejected[A changed status from\n`Review` into `Closed`]
+  AReviews --> |A Accepts| Accepted[(A updated status from\n`Review` into `Finished`)]
+  AReviews --> |A Rejects| Rejected[(A updated status from\n`Review` into `Closed`)]
   AReviews --> |A Rejects with Enhancement| RejectedFeedback[A changed status from\n`Review` into `Waiting`]
  RejectedFeedback --> AAddedFeedback[A Added Feedback]
   AAddedFeedback --> BReceive
-  Accepted --> AChangeStatusClosed[A changed status from\n`Finished` into `Closed`]
-  --> AGiveGrade[A Give Grade to B]
+  Accepted --> AChangeStatusClosed[(A updated status from\n`Finished` into `Closed`)]
+  --> AGiveGrade[[A Give Grade to B]]
   AGiveGrade --> End(((End)))
   Rejected --> AGiveGrade
 ```
@@ -347,12 +369,7 @@ flowchart TD
  ADoesTask --> |Done| AChangeStatusReview[A changed status from\n`Progress` into `Finished`]
   --> AClosedTask[A changed status from\n`Finished` into `Closed`]
   --> End(((End)))
-
 ```
-
-
-
-
 
 ### Todo database
 
@@ -362,9 +379,6 @@ flowchart TD
 - `assignedTo` is a list of uids that the task was aissgend to. This will help on getting the user list of the task.
 
 - `updatedAt` is updated when there is any changes on the task itself. Not the chagnes of other entitles like asignees.
-
-
-
 
 ### Todo-assign collection
 
@@ -378,9 +392,6 @@ flowchart TD
     - `closed` - the moderator can only mark it as `closed`. If the task is in `closed` status, assignee cannot update(change) anyting including the status anymore.
   - For example, The status can be changed at any time. Assignee can mark it as `review` and the moderator can mark it as `progress` soon after. But the moderator is the only one who can mark it as `closed` and once it is closed, it cannot be updated(changed).
 
-
-
-
 ### Widgets of TODO
 
 #### TodoListView
@@ -393,7 +404,3 @@ This list view is responsible to list all kinds of tasks which includes but not 
   - task that are create by himself and not assigned to any one,
   - task that are create by himself and assigned to more than 2 others,
   - and more more options.
-
-
-
-
