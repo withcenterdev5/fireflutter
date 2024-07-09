@@ -43,7 +43,10 @@
 
 - Starting must be `START(xxxx)`
 - End must be `END(())`
+- End with options should be `BUTTONS>Many options]`. For instance, after create a post, the app will show post deatil screen where the user can choose many options. And the process is finished when the post is created, then use this.
 - Process must be `WORK[xxxx]`
+- Create, Save, Update, Delete, or anything that need Database work must be `SAVE[(CREATE|UPDATE|DELETE)]`
+- Subroutines, or the next screen, dialog should be displayed with `NEXT_SCREEN[[List screen xxx]]`.
 
 
 
@@ -257,13 +260,28 @@ There are more to improve. But these work will be done later.
 flowchart LR
   START(GROUP CREATE)
     --> FORM{{INPUT FORM;<br>group name}}
-      --> SAVE(CREATE) --> END(((Group\nCreated)))
+      --> SAVE[(CREATE)] --> END(((Group\nCreated)))
 ```
 
 - Task can be created any member.
 
 ```mermaid
+flowchart TD
+  START(Create task)
+    --> FORM{{FORM;\ninput title, content}}
+      --> SAVE[(CREATE)]
+        --> DETAILS[[Task Detail Screen]]
+          --> OPTIONS>Many options]
 
+
+  OPTIONS
+    --> INVITE[Invite user]
+
+  OPTIONS
+    --> ASSIGN[Assign task to other;\none can assign/remove himself]
+
+  OPTIONS
+    --> STATUS[Change status]
 ```
 
 - A moderator can create a user group so he can quickly add all his member without inviting them indivisually in each groupo.
