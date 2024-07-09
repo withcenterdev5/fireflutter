@@ -28,12 +28,15 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    UserService.instance.init(publicProfileScreen: (user) {
-      return Scaffold(
-        appBar: AppBar(),
-        body: const Text('hello'),
-      );
-    });
+    UserService.instance.init(
+      enableAnonymousSignIn: true,
+      publicProfileScreen: (user) {
+        return Scaffold(
+          appBar: AppBar(),
+          body: const Text('hello'),
+        );
+      },
+    );
   }
 
   @override
