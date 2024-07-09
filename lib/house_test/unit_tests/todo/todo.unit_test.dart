@@ -54,6 +54,33 @@ Future testTaskAssign() async {
   );
 }
 
+Future testTaskUnassign() async {
+  final task = await createTask();
+  final createdRef = await Assign.create(taskId: task.id, uid: my!.uid);
+  final createdAssign = await Assign.get(createdRef.id) as Assign;
+  isTrue(createdAssign.taskId == task.id, 'Task id is not correct');
+  isTrue(createdAssign.uid == my!.uid, 'User id is not correct');
+
+  final updatedTask = await Task.get(task.id) as Task;
+
+  isTrue(
+    updatedTask.assignTo.contains(my!.uid),
+    'Expect: success on task assign',
+  );
+
+  await createdAssign.delete();
+
+  final updatedAssign = await Assign.get(createdAssign.id);
+  isTrue(updatedAssign == null, 'Expect: success on assign delete.');
+
+  final updatedTask2 = await Task.get(task.id) as Task;
+
+  isTrue(
+    !updatedTask2.assignTo.contains(my!.uid),
+    'Expect: success on task unassign (remove from assign list)',
+  );
+}
+
 Future testTaskCreate() async {
   final ref = await Task.create(title: 'fisrt task');
   final created = await Task.get(ref.id) as Task;
@@ -242,3 +269,27 @@ Future testTaskFlow() async {
 //     'Expect: success on task with priority create.',
 //   );
 // }
+
+Future testAssignRetrieveMyDocFromTaskID() async {
+  // uidB is the Assignee of the task
+  final uidB = await loginAsB();
+
+  // uidA is Creator of the task
+  await loginAsA();
+
+  // uidA created a task and assigned it to uidB
+  final task = await createTask();
+  final createdAssignRef = await Assign.create(uid: uidB, taskId: task.id);
+  await Assign.get(createdAssignRef.id);
+
+  final retrieveAssignOfA = await TodoService.instance.getMyAssign(task.id);
+
+  isTrue(retrieveAssignOfA == null,
+      "Expect: assign must be null for A because it is not assigned to A");
+
+  await loginAsB();
+
+  final retrieveAssignOfB = await TodoService.instance.getMyAssign(task.id);
+
+  isTrue(retrieveAssignOfB?.uid == uidB, "Expect: assign.uid must be uidB");
+}
