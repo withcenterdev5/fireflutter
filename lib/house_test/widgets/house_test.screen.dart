@@ -17,7 +17,7 @@ class _HouseTestScreenState extends State<HouseTestScreen> {
       appBar: AppBar(
         title: const Text('House Test'),
       ),
-      body: AuthState(
+      body: AuthStateChanges(
         builder: (user) => user == null
             ? const Text('Sign in to test')
             : Column(
