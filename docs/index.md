@@ -9,6 +9,27 @@ FireFlutter 는 Flutter 와 Firebase 를 사용하여 빠르게 앱을 구축하
 - 라이센스는 MIT 이며, 누구든지 어떤 목적으로든 사용 할 수 있다.
 - 지원하는 플랫폼은 ANDROID, IOS, MACOS, LINUX, WEB, WINDOWS 이다.
 - 백엔드는 파이어베이스 함수를 사용한다. 가능한 많은 것을 플러터에서 하되, 벡엔드가 꼭 필요하면 파이어베이스 내에서 모든 처리를 하기 위해서 파이어베이스 함수를 사용한다.
+- 과거 FireFlutter 버전은 많은 기능을 포함하는 거대한 패키지였는데, 0.4.x 에서는 각 기능별로 패키지를 나누어서 개발하였다. 그래서 개발자가 필요한 부분만 패키지로 설치해서 사용 할 수 있도록 하였다. 
+
+
+## 기능
+
+
+- 2024년 7월 FireFlutter 는 하나의 거대 패키지에서 기능별 패키지로 나뉘어졌으며 각 패키지는 완전히 분리되어 어떤 앱에서든 원하는 것만 골라서 쓸 수 있다. 다음은 기존의 FireFlutter 패키지 기능에 속해있었는데 분리되었거나 FireFlutter 와 함께 쓰면 유용한 패키지를 나열 하였다.
+
+
+- [FireFlutter](https://pub.dev/packages/fireflutter) 패키지는 회원 관리, 회원 정보 수정, 회원 탈퇴, 활동 기록, 활동 제한, 좋아요, 즐겨찾기, 신고, 블럭, 관리작 사용자를 차단 등 기본적인 기능들을 제공한다.
+
+- [Easy Chat](https://pub.dev/packages/easychat) 비용 절감을 위해서 채팅방 관리저 정보는 Firestore 를 쓰며, 채팅방 메시지는 Realtime Database 를 사용한다. 대용량 채팅방 서비스에 적합하다. 과거에 FireFlutter 의 기능이었지만 완전히 분리되어, 원한다면 이 패키지만 따로 골라서 쓸 수 있다.
+
+- [Easy Forum](https://...) 은 게시판이다.
+
+- [Task Management System](https://github.com/thruthesky/task_management_system)은 `해야 할 일` 또는 `이슈 트래킹 시스템` 등으로 활용을 할 수 있다. 원래 FireFlutter 의 기능이었지만 이제는 완전히 분리된 패키지이다. 따라서 완전히 독립적으로 사용 할 수 있으며 원한다면 여러분의 앱에 이 패키지만 쓸 수 있다.
+
+
+- [Phone Sign In](https://pub.dev/packages/phone_sign_in) 은 전화번호 로그인을 위한 패키지이며, link with credential 을 지원하며 특별히 리뷰를 위한 가짜 로그인을 지원한다.
+
+
 
 
 ## 참여 방법
