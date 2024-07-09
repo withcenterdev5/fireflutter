@@ -21,121 +21,122 @@ class _SimpleHomeScreenState extends State<SimpleHomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('house.name'.t),
-        ),
-        body: AuthStateChanges(
-          builder: (user) => user != null && !user.isAnonymous
-              ? Column(
+      appBar: AppBar(
+        title: Text('house.name'.t),
+      ),
+      body: AuthStateChanges(
+        builder: (user) => user != null
+            ? Column(
+                children: [
+                  MyDoc(builder: (my) {
+                    if (my == null) return const Text('loading');
+                    return Text(my.uid);
+                  }),
+                  //
+                  ElevatedButton(
+                    onPressed: () {
+                      context.push(UserProfileUpdateScreen.routeName);
+                    },
+                    child: const Text('Edit Profile'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      context.push(UserPublicProfileScreen.routeName,
+                          extra: {'user': my});
+                    },
+                    child: const Text('Public Profile'),
+                  ),
+
+                  ElevatedButton(
+                    onPressed: () {
+                      UserService.instance.showPublicProfile(context);
+                    },
+                    child: const Text('Public Profile'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () async {
+                      final re = await showDialog<bool?>(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                                title: const Text('Are you sure?'),
+                                content: const Text('Do you want to resign?'),
+                                actions: [
+                                  TextButton(
+                                      onPressed: () {
+                                        context.pop(true);
+                                      },
+                                      child: const Text('Yes')),
+                                  TextButton(
+                                      onPressed: () {
+                                        context.pop(false);
+                                      },
+                                      child: const Text('No'))
+                                ],
+                              ));
+
+                      if (re == false) return;
+                      dog('$re');
+                      // user resign
+                    },
+                    child: const Text('Resign'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () async {
+                      final photoUrl = await StorageService.instance.uploadAt(
+                        context: context,
+                        ref: UserService.instance.col.doc(my!.uid),
+                      );
+                      dog('$photoUrl');
+                    },
+                    child: const Text('Upload'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      i.signOut();
+                    },
+                    child: const Text('Logout'),
+                  ),
+                  const Expanded(
+                    child: UserListView(),
+                  ),
+                ],
+              )
+            : SingleChildScrollView(
+                child: Column(
                   children: [
                     MyDoc(builder: (my) {
                       if (my == null) return const Text('loading');
                       return Text(my.uid);
                     }),
-                    //
                     ElevatedButton(
                       onPressed: () {
-                        context.push(UserProfileUpdateScreen.routeName);
+                        UserService.instance.showProfileUpdaeScreen(context);
                       },
                       child: const Text('Edit Profile'),
                     ),
-                    ElevatedButton(
-                      onPressed: () {
-                        context.push(UserPublicProfileScreen.routeName,
-                            extra: {'user': my});
+                    PhoneSignIn(
+                      linkCurrentUser: true,
+                      onSignInSuccess: () {
+                        if (mounted) {
+                          setState(() {});
+                        }
                       },
-                      child: const Text('Public Profile'),
-                    ),
-
-                    ElevatedButton(
-                      onPressed: () {
-                        UserService.instance.showPublicProfile(context);
+                      onSignInFailed: (e) {
+                        dog("phonesign Error ----- $e");
                       },
-                      child: const Text('Public Profile'),
                     ),
-                    ElevatedButton(
-                      onPressed: () async {
-                        final re = await showDialog<bool?>(
-                            context: context,
-                            builder: (context) => AlertDialog(
-                                  title: const Text('Are you sure?'),
-                                  content: const Text('Do you want to resign?'),
-                                  actions: [
-                                    TextButton(
-                                        onPressed: () {
-                                          context.pop(true);
-                                        },
-                                        child: const Text('Yes')),
-                                    TextButton(
-                                        onPressed: () {
-                                          context.pop(false);
-                                        },
-                                        child: const Text('No'))
-                                  ],
-                                ));
-
-                        if (re == false) return;
-                        dog('$re');
-                        // user resign
+                    const Divider(),
+                    EmailPasswordLogin(
+                      onLogin: () {
+                        if (mounted) {
+                          setState(() {});
+                        }
                       },
-                      child: const Text('Resign'),
-                    ),
-                    ElevatedButton(
-                      onPressed: () async {
-                        final photoUrl = await StorageService.instance.uploadAt(
-                          context: context,
-                          ref: UserService.instance.col.doc(my!.uid),
-                        );
-                        dog('$photoUrl');
-                      },
-                      child: const Text('Upload'),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        i.signOut();
-                      },
-                      child: const Text('Logout'),
-                    ),
-                    const Expanded(
-                      child: UserListView(),
-                    ),
+                    )
                   ],
-                )
-              : SingleChildScrollView(
-                  child: Column(
-                    children: [
-                      MyDoc(builder: (my) {
-                        if (my == null) return const Text('loading');
-                        return Text(my.uid);
-                      }),
-                      ElevatedButton(
-                        onPressed: () {
-                          UserService.instance.showProfileUpdaeScreen(context);
-                        },
-                        child: const Text('Edit Profile'),
-                      ),
-                      PhoneSignIn(
-                        onSignInSuccess: () {
-                          if (mounted) {
-                            setState(() {});
-                          }
-                        },
-                        onSignInFailed: (e) {
-                          dog("phonesign Error ----- $e");
-                        },
-                        specialAccounts: const SpecialAccounts(),
-                      ),
-                      const Divider(),
-                      EmailPasswordLogin(
-                        onLogin: () {
-                          if (mounted) {
-                            setState(() {});
-                          }
-                        },
-                      )
-                    ],
-                  ),
                 ),
-        ));
+              ),
+      ),
+    );
   }
 }
