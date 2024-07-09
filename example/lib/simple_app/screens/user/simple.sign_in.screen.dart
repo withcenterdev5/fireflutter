@@ -4,16 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:phone_sign_in/phone_sign_in.dart';
 
-class SimpleSignScreen extends StatefulWidget {
+class SimpleSignInScreen extends StatefulWidget {
   static const String routeName = '/Login';
-  const SimpleSignScreen({super.key});
+  const SimpleSignInScreen({super.key});
 
   @override
-  State<SimpleSignScreen> createState() => _SimpleSignScreenState();
+  State<SimpleSignInScreen> createState() => _SimpleSignScreenState();
 }
 
 /// Changed the login screen temporarily to make a test flow
-class _SimpleSignScreenState extends State<SimpleSignScreen> {
+class _SimpleSignScreenState extends State<SimpleSignInScreen> {
   String loginType = 'email';
 
   @override
