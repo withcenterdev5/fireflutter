@@ -20,6 +20,13 @@ class TodoService {
   CollectionReference assignCol =
       FirebaseFirestore.instance.collection('todo-assign');
 
+  /// Group relationship collection
+  ///
+  /// All tasks must belong to a group and the task can be assigned to users
+  /// in the same group.
+  CollectionReference groupCol =
+      FirebaseFirestore.instance.collection('todo-group');
+
   /// Get assingees of the task
   Future<List<Assign>> getAssigns(String taskId) async {
     final snapshot = await assignCol.where('taskId', isEqualTo: taskId).get();
