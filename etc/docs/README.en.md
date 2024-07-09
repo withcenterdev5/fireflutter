@@ -4,7 +4,8 @@
 - [FireFlutter](#fireflutter)
   - [Building as a core developer](#building-as-a-core-developer)
   - [Coding convention](#coding-convention)
-    - [Singular form](#singular-form)
+    - [Documenations](#documenations)
+      - [Mermaid](#mermaid)
     - [Model class](#model-class)
     - [Data listing](#data-listing)
   - [Documentation](#documentation)
@@ -15,6 +16,9 @@
   - [Translation](#translation)
   - [TODO feature](#todo-feature)
   - [TODO feature](#todo-feature-1)
+    - [TO DOs](#to-dos)
+    - [Terms](#terms)
+    - [Logic of TODO feature](#logic-of-todo-feature)
     - [Todo database](#todo-database)
     - [Todo-Task collection](#todo-task-collection)
     - [Todo-assign collection](#todo-assign-collection)
@@ -31,9 +35,18 @@
 ## Coding convention
 
 
-### Singular form
 
-Singular form is preferred for field names, function names, collection names, etc.
+
+### Documenations
+
+#### Mermaid
+
+- Starting must be `START(xxxx)`
+- End must be `END(())`
+- End with options should be `BUTTONS>Many options]`. For instance, after create a post, the app will show post deatil screen where the user can choose many options. And the process is finished when the post is created, then use this.
+- Process must be `WORK[xxxx]`
+- Create, Save, Update, Delete, or anything that need Database work must be `SAVE[(CREATE|UPDATE|DELETE)]`
+- Subroutines, or the next screen, dialog should be displayed with `NEXT_SCREEN[[List screen xxx]]`.
 
 
 
@@ -157,6 +170,7 @@ expect('apple'.tr(args: {'name': 'J', 'n': n}, form: n), 'J has 3 apples.');
 
 
 
+
 - flow of task.
 ```
 creator -> assigned -> in-progress(working) -> [ finished | quit ] -> review -> [ accept | reject ]
@@ -225,6 +239,67 @@ task7 {
 
 ## TODO feature
 
+
+### TO DOs
+
+There are more to improve. But these work will be done later.
+
+- a moderator should be able to give permission to whom he can create tasks.
+- A moderator can create his own user groups so he can quickly add all his member without inviting them indivisually in each groupo.
+
+
+### Terms
+
+- A `moderator` is the one who manages the tasks. Usually, the he is the one who creates the group, invites other users, creates tasks and assigns to others. Anyone can be a moderator without any registration.
+
+
+### Logic of TODO feature
+
+
+- A moderator should begin with creating a group to start managing tasks and users.
+
+
+```mermaid
+flowchart LR
+  START(GROUP CREATE)
+    --> FORM{{INPUT FORM;<br>group name}}
+      --> SAVE[(CREATE)] --> END(((Group\nCreated)))
+```
+
+- Task can be created any member.
+
+```mermaid
+flowchart TD
+  START(Create task)
+    --> FORM{{FORM;\ninput title, content}}
+      --> SAVE[(CREATE)]
+        --> DETAILS[[Task Detail Screen]]
+          --> OPTIONS>Many options]
+
+
+  OPTIONS
+    --> INVITE[Invite user]
+
+  OPTIONS
+    --> ASSIGN[Assign task to other;\none can assign/remove himself]
+
+  OPTIONS
+    --> STATUS[Change status]
+```
+
+- Invite user and accept
+
+```mermaid
+flowchart TD
+  START(A invites B)
+    --> 
+```
+
+
+
+
+
+
 ### Todo database
 
 ### Todo-Task collection
@@ -264,5 +339,7 @@ This list view is responsible to list all kinds of tasks which includes but not 
   - task that are create by himself and not assigned to any one,
   - task that are create by himself and assigned to more than 2 others,
   - and more more options.
+
+
 
 
