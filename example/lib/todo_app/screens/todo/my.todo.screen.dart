@@ -23,7 +23,7 @@ class MyTodoScreen extends StatelessWidget {
                   );
                 },
                 queryOptions: TaskQueryOptions(
-                  assignToContains: my?.uid,
+                  assignToContains: my!.uid,
                 ),
                 itemBuilder: (task, index) {
                   return Container(
