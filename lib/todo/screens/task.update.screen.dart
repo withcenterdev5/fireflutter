@@ -1,18 +1,29 @@
 import 'package:fireflutter/fireflutter.dart';
 import 'package:flutter/material.dart';
 
-class TaskCreateScreen extends StatefulWidget {
-  static const String routeName = '/TodoCreate';
-  const TaskCreateScreen({super.key});
+class TaskUpdateScreen extends StatefulWidget {
+  const TaskUpdateScreen({
+    super.key,
+    required this.task,
+  });
+
+  final Task task;
 
   @override
-  State<TaskCreateScreen> createState() => _TodoCreateScreenState();
+  State<TaskUpdateScreen> createState() => _TaskUpdateScreenState();
 }
 
-class _TodoCreateScreenState extends State<TaskCreateScreen> {
+class _TaskUpdateScreenState extends State<TaskUpdateScreen> {
   final titleController = TextEditingController();
 
   final contentController = TextEditingController();
+
+  @override
+  void initState() {
+    titleController.text = widget.task.title;
+    contentController.text = widget.task.content;
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -24,9 +35,7 @@ class _TodoCreateScreenState extends State<TaskCreateScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Todo Create'),
-      ),
+      appBar: AppBar(title: const Text("Task Update")),
       body: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Column(
@@ -41,8 +50,8 @@ class _TodoCreateScreenState extends State<TaskCreateScreen> {
             ),
             const Spacer(),
             ElevatedButton(
-              onPressed: createTask,
-              child: const Text("Create Task"),
+              onPressed: updateTask,
+              child: const Text("Update Task"),
             ),
             const SafeArea(
               child: SizedBox(
@@ -55,21 +64,13 @@ class _TodoCreateScreenState extends State<TaskCreateScreen> {
     );
   }
 
-  createTask() async {
-    final createRef = await Task.create(
+  updateTask() async {
+    await widget.task.update(
       title: titleController.text,
       content: contentController.text,
     );
-
-    final task = await Task.get(createRef.id);
+    final updatedTask = await Task.get(widget.task.id);
     if (!mounted) return;
-    Navigator.of(context).pop();
-    if (task == null) return;
-    showGeneralDialog(
-      context: context,
-      pageBuilder: (_, __, ___) => TaskDetailScreen(
-        task: task,
-      ),
-    );
+    Navigator.of(context).pop(updatedTask);
   }
 }

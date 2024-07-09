@@ -1,28 +1,28 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_ui_firestore/firebase_ui_firestore.dart';
 import 'package:fireflutter/fireflutter.dart';
+import 'package:fireflutter/todo/screens/assign.detail.screen.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-class TaskQueryOptions {
-  TaskQueryOptions({
+class AssignQueryOptions {
+  const AssignQueryOptions({
+    this.task,
     this.limit = 20,
     this.orderBy = 'createdAt',
     this.orderByDescending = true,
-    this.assignToContains,
+    this.uid,
   });
 
+  final Task? task;
   final int limit;
   final String orderBy;
   final bool orderByDescending;
-  final String? assignToContains;
+  final String? uid;
 }
 
-/// Task list view
-///
-/// This widget displays a list of tasks using [ListView.separated] widget.
-class TaskListView extends StatelessWidget {
-  const TaskListView({
+class AssignListView extends StatelessWidget {
+  const AssignListView({
     super.key,
     this.pageSize = 20,
     this.loadingBuilder,
@@ -67,32 +67,35 @@ class TaskListView extends StatelessWidget {
   final ScrollViewKeyboardDismissBehavior keyboardDismissBehavior;
   final String? restorationId;
   final Clip clipBehavior;
-  final Widget Function(Task task, int index)? itemBuilder;
+  final Widget Function(Assign assign, int index)? itemBuilder;
   final Widget Function()? emptyBuilder;
-  final TaskQueryOptions? queryOptions;
+  final AssignQueryOptions? queryOptions;
 
   @override
   Widget build(BuildContext context) {
-    Query taskQuery = Task.col;
-
+    Query assignQuery = Assign.col;
     if (queryOptions != null) {
-      if (queryOptions!.assignToContains != null) {
-        taskQuery = taskQuery.where(
-          "assignTo",
-          arrayContains: queryOptions!.assignToContains!,
+      if (queryOptions!.task != null) {
+        assignQuery = assignQuery.where(
+          'taskId',
+          isEqualTo: queryOptions!.task!.id,
         );
       }
-
-      taskQuery = taskQuery
+      if (queryOptions!.uid != null) {
+        assignQuery = assignQuery.where(
+          'uid',
+          isEqualTo: queryOptions!.uid,
+        );
+      }
+      assignQuery = assignQuery
           .orderBy(
             queryOptions!.orderBy,
             descending: queryOptions!.orderByDescending,
           )
           .limit(queryOptions!.limit);
     }
-
     return FirestoreQueryBuilder(
-      query: taskQuery,
+      query: assignQuery,
       builder: (context, snapshot, _) {
         if (snapshot.isFetching) {
           return loadingBuilder?.call() ??
@@ -138,27 +141,32 @@ class TaskListView extends StatelessWidget {
               snapshot.fetchMore();
             }
 
-            final task = Task.fromSnapshot(snapshot.docs[index]);
+            final assign = Assign.fromSnapshot(snapshot.docs[index]);
 
-            return itemBuilder?.call(task, index) ??
-                GestureDetector(
-                  onTap: () {
-                    showGeneralDialog(
-                      context: context,
-                      pageBuilder: (_, __, ___) => TaskDetailScreen(
-                        task: task,
-                      ),
-                    );
-                  },
-                  child: Container(
+            return GestureDetector(
+              onTap: () {
+                // Navigator.of(context).pushNamed(
+                //   TaskDetailScreen.routeName,
+                //   arguments: task,
+                // );
+
+                showGeneralDialog(
+                  context: context,
+                  pageBuilder: (_, __, ___) => AssignDetailScreen(
+                    assign: assign,
+                  ),
+                );
+              },
+              child: itemBuilder?.call(assign, index) ??
+                  Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
                       color: Colors.teal[100],
-                      border: Border.all(width: 1),
+                      border: Border.all(),
                     ),
-                    child: Text("Task is ${task.title}"),
+                    child: Text("${assign.uid}: ${assign.status}"),
                   ),
-                );
+            );
           },
         );
       },

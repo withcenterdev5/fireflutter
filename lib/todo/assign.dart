@@ -8,6 +8,14 @@ class AssignStatus {
   static const review = 'review';
   static const closed = 'closed';
 
+  static List<String> values() => [
+        waiting,
+        progress,
+        finished,
+        review,
+        closed,
+      ];
+
   AssignStatus._();
 }
 
@@ -18,6 +26,7 @@ class Assign {
   String status;
   DateTime createdAt;
   DateTime updatedAt;
+  String assignedBy;
 
   Assign({
     required this.id,
@@ -26,9 +35,10 @@ class Assign {
     required this.status,
     required this.createdAt,
     required this.updatedAt,
+    required this.assignedBy,
   });
 
-  final CollectionReference col = TodoService.instance.assignCol;
+  static final CollectionReference col = TodoService.instance.assignCol;
   DocumentReference get ref => col.doc(id);
 
   factory Assign.fromSnapshot(DocumentSnapshot snapshot) {
@@ -46,6 +56,7 @@ class Assign {
       status: json['status'],
       createdAt: createdAt == null ? DateTime.now() : createdAt.toDate(),
       updatedAt: updatedAt == null ? DateTime.now() : updatedAt.toDate(),
+      assignedBy: json['assignedBy'] ?? '',
     );
   }
 
@@ -55,6 +66,9 @@ class Assign {
     if (!snapshot.exists) return null;
     return Assign.fromSnapshot(snapshot);
   }
+
+  // REVIEW
+  // Getter using TaskId and UID?
 
   /// Assign a task to a user
   ///
@@ -71,6 +85,8 @@ class Assign {
       'taskId': taskId,
       'status': AssignStatus.waiting,
       'createdAt': FieldValue.serverTimestamp(),
+      'updatedAt': FieldValue.serverTimestamp(),
+      'assignedBy': my?.uid,
     });
 
     await TodoService.instance.taskCol.doc(taskId).update({
@@ -86,5 +102,17 @@ class Assign {
       'status': status,
       'updatedAt': FieldValue.serverTimestamp(),
     });
+  }
+
+  /// Delete an assign
+  ///
+  ///
+  Future<void> delete() async {
+    TodoService.instance.taskCol.doc(taskId).update({
+      'assignTo': FieldValue.arrayRemove([uid]),
+    });
+
+    // Must delete other related data like photos.
+    await ref.delete();
   }
 }
