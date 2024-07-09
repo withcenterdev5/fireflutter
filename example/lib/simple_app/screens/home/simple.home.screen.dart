@@ -101,34 +101,40 @@ class _SimpleHomeScreenState extends State<SimpleHomeScreen> {
                     ),
                   ],
                 )
-              : Column(
-                  children: [
-                    MyDoc(builder: (my) {
-                      if (my == null) return const Text('loading');
-                      return Text(my.uid);
-                    }),
-                    ElevatedButton(
-                      onPressed: () {
-                        UserService.instance.showProfileUpdaeScreen(context);
-                      },
-                      child: const Text('Edit Profile'),
-                    ),
-                    PhoneSignIn(
-                      onSignInSuccess: () {
-                        setState(() {});
-                      },
-                      onSignInFailed: (e) {
-                        dog("phonesign Error ----- $e");
-                      },
-                      specialAccounts: const SpecialAccounts(),
-                    ),
-                    const Divider(),
-                    EmailPasswordLogin(
-                      onLogin: () {
-                        setState(() {});
-                      },
-                    )
-                  ],
+              : SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      MyDoc(builder: (my) {
+                        if (my == null) return const Text('loading');
+                        return Text(my.uid);
+                      }),
+                      ElevatedButton(
+                        onPressed: () {
+                          UserService.instance.showProfileUpdaeScreen(context);
+                        },
+                        child: const Text('Edit Profile'),
+                      ),
+                      PhoneSignIn(
+                        onSignInSuccess: () {
+                          if (mounted) {
+                            setState(() {});
+                          }
+                        },
+                        onSignInFailed: (e) {
+                          dog("phonesign Error ----- $e");
+                        },
+                        specialAccounts: const SpecialAccounts(),
+                      ),
+                      const Divider(),
+                      EmailPasswordLogin(
+                        onLogin: () {
+                          if (mounted) {
+                            setState(() {});
+                          }
+                        },
+                      )
+                    ],
+                  ),
                 ),
         ));
   }

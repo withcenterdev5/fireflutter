@@ -1,5 +1,6 @@
 import 'package:example/simple_app/screens/home/simple.home.screen.dart';
 import 'package:example/simple_app/screens/menu/simple.menu.screen.dart';
+import 'package:example/simple_app/screens/user/simple.user_list.screen.dart';
 import 'package:example/simple_app/state/simple.app_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -18,7 +19,7 @@ class MainSimpleScreen extends StatelessWidget {
           index: index,
           children: const [
             SimpleHomeScreen(),
-            // UserListScreen(),
+            SimpleUserListScreen(),
             SimpleMenuScreen(),
           ],
         ),
@@ -34,11 +35,11 @@ class MainSimpleScreen extends StatelessWidget {
             ),
             NavigationDestination(
               icon: const Icon(Icons.search),
-              label: 'todo'.t,
+              label: 'search'.t,
             ),
             NavigationDestination(
               icon: const Icon(Icons.menu),
-              label: 'ai'.t,
+              label: 'menu'.t,
             ),
             // NavigationDestination(
             //   icon: const FaIcon(FontAwesomeIcons.thinGamepad),
