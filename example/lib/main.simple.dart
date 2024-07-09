@@ -30,12 +30,6 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     UserService.instance.init(
       enableAnonymousSignIn: true,
-      publicProfileScreen: (user) {
-        return Scaffold(
-          appBar: AppBar(),
-          body: const Text('hello'),
-        );
-      },
     );
   }
 
