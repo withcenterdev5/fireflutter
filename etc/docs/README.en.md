@@ -290,11 +290,65 @@ flowchart TD
 - Invite user and accept
 
 ```mermaid
-flowchart TD
+flowchart LR
   START(A invites B)
-    --> 
+    --> CREATE[(Save Invitation\nto Group)]
+    --> WaitAcceptance>Wait for B to Accept]
+    --> |Accepted| BAccepted[(Update Invite\ninto Accepted)]
+    WaitAcceptance --> |Rejected| BRejected[(Delete User\nInvitation)]
+    BAccepted --> End(((End)))
+    BRejected --> End(((End)))
 ```
 
+- Assign Task to Group (Main)
+
+```mermaid
+flowchart TD
+  START(Begin)
+  --> CreateTask[[Create Task]]
+  --> AssignToGroup[[Assign Task to Group\nLoop thru all members then assign]]
+  --> End(((End)))  
+```
+
+- User B Does the task assigned by User A
+
+```mermaid
+flowchart TD
+  START(A Assigned Task to B)
+  --> BReceive[B received the task with `Waiting` Status]
+  --> ChangeStatusProgress[B changed status from\n`Waiting` into `Progress`]
+  --> BDoesTask[B Does the task]
+  --> BChangeStatusReview[B changed status from\n`Progress` into `Review`]
+  --> AReviews>A Reviews B's output]
+  AReviews --> |A Accepts| Accepted[A changed status from\n`Review` into `Finished`]
+  AReviews --> |A Rejects| Rejected[A changed status from\n`Review` into `Closed`]
+  AReviews --> |A Rejects with Enhancement| RejectedFeedback[A changed status from\n`Review` into `Waiting`]
+ RejectedFeedback --> AAddedFeedback[A Added Feedback]
+  AAddedFeedback --> BReceive
+  Accepted --> AChangeStatusClosed[A changed status from\n`Finished` into `Closed`]
+  --> AGiveGrade[A Give Grade to B]
+  AGiveGrade --> End(((End)))
+  Rejected --> AGiveGrade
+```
+
+- User A Created his own task for herself
+
+```mermaid
+flowchart TD
+  START(Begin)
+  --> CreateTask[[Create Task]]
+  --> AssignToHerself[[Assign Task to Herself]]
+  --> ReceiveTask[A sees the task in her listing.\nStatus is `Waiting`]
+  --> ChangeStatusProgress[A changed status from\n`Waiting` into `Progress]
+  --> ADoesTask[A Does the task]
+  ADoesTask --> |Pause| ChangeStatusPaused[A changed status from\n`Progress` into `Paused`]
+  ChangeStatusPaused --> ChangeStatusProgess2[A changed status from\n`Paused` into `Progress`]
+  ChangeStatusProgess2 --> ADoesTask
+ ADoesTask --> |Done| AChangeStatusReview[A changed status from\n`Progress` into `Finished`]
+  --> AClosedTask[A changed status from\n`Finished` into `Closed`]
+  --> End(((End)))
+
+```
 
 
 
