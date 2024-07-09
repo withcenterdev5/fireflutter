@@ -55,25 +55,53 @@ class _AssignDetailScreenState extends State<AssignDetailScreen> {
             Text("UID: ${widget.assign.uid}"),
             Text("Status: ${widget.assign.status}"),
             const Spacer(),
-            DropdownMenu<String>(
-              dropdownMenuEntries: AssignStatus.values()
-                  .map(
-                    (status) => DropdownMenuEntry(value: status, label: status),
-                  )
-                  .toList(),
-              initialSelection: widget.assign.status,
-              controller: statusController,
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                await widget.assign.changeStatus(statusController.text);
-                if (!context.mounted) return;
-                setState(() {
-                  widget.assign.status = statusController.text;
-                });
-              },
-              child: const Text("CHANGE STATUS"),
-            ),
+            if (widget.assign.uid == my?.uid ||
+                widget.assign.assignedBy == my?.uid) ...[
+              DropdownMenu<String>(
+                // dropdownMenuEntries: AssignStatus.values()
+                //     .map(
+                //       (status) => DropdownMenuEntry(value: status, label: status),
+                //     )
+                //     .toList(),
+                dropdownMenuEntries: [
+                  if (widget.assign.status == AssignStatus.waiting)
+                    const DropdownMenuEntry(
+                      value: AssignStatus.waiting,
+                      label: "Waiting",
+                    ),
+                  const DropdownMenuEntry(
+                    value: AssignStatus.progress,
+                    label: "In Progress",
+                  ),
+                  const DropdownMenuEntry(
+                    value: AssignStatus.review,
+                    label: "Review",
+                  ),
+                  if (widget.assign.assignedBy == my?.uid) ...[
+                    const DropdownMenuEntry(
+                      value: AssignStatus.finished,
+                      label: "Finished",
+                    ),
+                    const DropdownMenuEntry(
+                      value: AssignStatus.closed,
+                      label: "Closed",
+                    ),
+                  ],
+                ],
+                initialSelection: widget.assign.status,
+                controller: statusController,
+              ),
+              ElevatedButton(
+                onPressed: () async {
+                  await widget.assign.changeStatus(statusController.text);
+                  if (!context.mounted) return;
+                  setState(() {
+                    widget.assign.status = statusController.text;
+                  });
+                },
+                child: const Text("CHANGE STATUS"),
+              ),
+            ],
             const SizedBox(height: 24),
             if (widget.assign.assignedBy == my?.uid)
               ElevatedButton(

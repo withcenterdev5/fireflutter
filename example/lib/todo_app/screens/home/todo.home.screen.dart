@@ -30,7 +30,7 @@ class _TodoHomeScreenState extends State<TodoHomeScreen> {
       ),
       body: Column(
         children: [
-          AuthState(
+          AuthStateChanges(
             builder: (user) => user == null
                 ? const EmailPasswordLogin()
                 : ElevatedButton(

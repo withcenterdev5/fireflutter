@@ -56,11 +56,20 @@ class _TodoCreateScreenState extends State<TaskCreateScreen> {
   }
 
   createTask() async {
-    await Task.create(
+    final createRef = await Task.create(
       title: titleController.text,
       content: contentController.text,
     );
+
+    final task = await Task.get(createRef.id);
     if (!mounted) return;
     Navigator.of(context).pop();
+    if (task == null) return;
+    showGeneralDialog(
+      context: context,
+      pageBuilder: (_, __, ___) => TaskDetailScreen(
+        task: task,
+      ),
+    );
   }
 }
