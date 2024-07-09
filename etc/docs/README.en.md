@@ -4,7 +4,8 @@
 - [FireFlutter](#fireflutter)
   - [Building as a core developer](#building-as-a-core-developer)
   - [Coding convention](#coding-convention)
-    - [Singular form](#singular-form)
+    - [Documenations](#documenations)
+      - [Mermaid](#mermaid)
     - [Model class](#model-class)
     - [Data listing](#data-listing)
   - [Documentation](#documentation)
@@ -15,6 +16,9 @@
   - [Translation](#translation)
   - [TODO feature](#todo-feature)
   - [TODO feature](#todo-feature-1)
+    - [TO DOs](#to-dos)
+    - [Terms](#terms)
+    - [Logic of TODO feature](#logic-of-todo-feature)
     - [Todo database](#todo-database)
     - [Todo-Task collection](#todo-task-collection)
     - [Todo-assign collection](#todo-assign-collection)
@@ -31,9 +35,15 @@
 ## Coding convention
 
 
-### Singular form
 
-Singular form is preferred for field names, function names, collection names, etc.
+
+### Documenations
+
+#### Mermaid
+
+- Starting must be `START(xxxx)`
+- End must be `END(())`
+- Process must be `WORK[xxxx]`
 
 
 
@@ -225,6 +235,42 @@ task7 {
 
 ## TODO feature
 
+
+### TO DOs
+
+There are more to improve. But these work will be done later.
+
+- a moderator should be able to give permission to whom he can create tasks.
+
+### Terms
+
+- A `moderator` is the one who manages the tasks. Usually, the he is the one who creates the group, invites other users, creates tasks and assigns to others. Anyone can be a moderator without any registration.
+
+
+### Logic of TODO feature
+
+
+- A moderator should begin with creating a group to start managing tasks and users.
+
+
+```mermaid
+flowchart LR
+  START(GROUP CREATE)
+    --> FORM{{INPUT FORM;<br>group name}}
+      --> SAVE(CREATE) --> END(((Group\nCreated)))
+```
+
+- Task can be created any member.
+
+```mermaid
+
+```
+
+- A moderator can create a user group so he can quickly add all his member without inviting them indivisually in each groupo.
+
+
+
+
 ### Todo database
 
 ### Todo-Task collection
@@ -264,5 +310,7 @@ This list view is responsible to list all kinds of tasks which includes but not 
   - task that are create by himself and not assigned to any one,
   - task that are create by himself and assigned to more than 2 others,
   - and more more options.
+
+
 
 
