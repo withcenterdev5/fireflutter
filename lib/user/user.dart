@@ -25,6 +25,7 @@ class User {
   int? birthDay;
   DateTime? lastLoginAt;
   String? photoUrl;
+  List<String>? puzzleUrls;
 
   /// Collection reference of the user's collection.
   ///
@@ -44,6 +45,7 @@ class User {
     this.birthDay,
     this.lastLoginAt,
     this.photoUrl,
+    this.puzzleUrls,
   });
 
   /// Create a user with the given [uid].
@@ -99,6 +101,7 @@ class User {
       birthMonth: json['birthMonth'],
       birthDay: json['birthDay'],
       photoUrl: json['photoUrl'],
+      puzzleUrls: json['puzzleUrls'],
     );
   }
 
@@ -116,6 +119,7 @@ class User {
     data['birthDay'] = birthDay;
     data['lastLoginAt'] = lastLoginAt;
     data['photoUrl'] = photoUrl;
+    data['puzzleUrls'] = puzzleUrls;
     return data;
   }
 
@@ -171,6 +175,7 @@ class User {
     int? birthDay,
     String? gender,
     String? photoUrl,
+    List<String>? puzzleUrls,
   }) async {
     await doc.set(
       {
@@ -182,6 +187,7 @@ class User {
         if (birthDay != null) 'birthDay': birthDay,
         if (gender != null) 'gender': gender,
         if (photoUrl != null) 'photoUrl': photoUrl,
+        if (puzzleUrls != null) 'puzzleUrls': puzzleUrls,
       },
       SetOptions(merge: true),
     );
